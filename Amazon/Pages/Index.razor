@@ -1,0 +1,15 @@
+@page "/"
+@inject IToastService toastService
+
+<PageTitle>Index</PageTitle>
+
+<h1>Amazon</h1>
+
+Добро пожаловать в интернет магазин.<br/>
+Текущее время: @DateTime.Now.ToString("T")
+<SurveyPrompt Title="How is Blazor working for you?"/>
+
+
+@code {
+
+}
