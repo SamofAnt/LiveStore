@@ -7,7 +7,7 @@ public interface IBasket
      int ItemsCount { get;  }
      decimal TotalAmount { get; }
      IReadOnlyDictionary<Product, int> GetBasketProducts();
-     Product Add(Product product);
+     void Add(Product product);
      bool Remove(Product product);
      void Clear();
 }

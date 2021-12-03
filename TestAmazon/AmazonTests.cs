@@ -30,6 +30,7 @@ public class AmazonTests
     {
         _basket.Add(_product);
         Assert.IsTrue( _basket.Remove(_product));
+        Assert.AreEqual(0,_basket.ItemsCount);
     }
 
     [Test]

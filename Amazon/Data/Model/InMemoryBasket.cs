@@ -10,13 +10,12 @@ public class InMemoryBasket : IBasket
 
     public decimal TotalAmount => _products?.Sum(p => p.Key.Price * p.Value) ?? 0;
     public IReadOnlyDictionary<Product, int> GetBasketProducts() => _products;
-    public Product Add(Product product)
+    public void Add(Product product)
     {
         if (_products.ContainsKey(product))
             _products[product]++;
         else
             _products.TryAdd(product, 1);
-        return product;
     }
 
     public bool Remove(Product product)
