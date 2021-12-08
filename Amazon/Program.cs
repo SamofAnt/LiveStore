@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Amazon.Data;
 using Amazon.Data.Interfaces;
 using Amazon.Data.Model;

@@ -7,22 +7,26 @@
     margin-bottom: 15px;
     margin-top: 15px;
 }
+
 .product-item img {
     display: block;
     margin: 0 auto;
     width: 250px;
     height: 250px;
 }
+
 .product-list {
     background: #fafafa;
     padding: 15px 0;
 }
+
 .product-list h3 {
     font-size: 18px;
     font-weight: 400;
     color: #444444;
     margin: 0 0 10px 0;
 }
+
 .price {
     font-size: 22px;
     color: #fc5a5a;

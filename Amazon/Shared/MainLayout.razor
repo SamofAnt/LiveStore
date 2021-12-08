@@ -1,9 +1,7 @@
-﻿@using Amazon.Data
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 
-
-<PageTitle>Amazon</PageTitle>
+<PageTitle>LiveStore</PageTitle>
 
 <div class="page">
     <div class="sidebar">
@@ -12,14 +10,14 @@
 
     <main>
         <div class="top-row px-4">
-                <a href="Basket">
-                    <span class="oi oi-cart" aria-hidden="true"></span>
-                    Корзина
-                </a>
+            <a href="Basket">
+                <span class="oi oi-cart" aria-hidden="true"></span>
+                Корзина
+            </a>
         </div>
         <article class="content px-4">
             @Body
         </article>
     </main>
-    <BlazoredToasts />
+    <BlazoredToasts/>
 </div>

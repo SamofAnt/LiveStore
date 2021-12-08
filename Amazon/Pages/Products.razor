@@ -1,30 +1,18 @@
 ﻿@page "/Catalog"
 @using Amazon.Data.Interfaces
 @using Amazon.Data.Model
-@using Amazon.Data
-@using System.Globalization
 
 <h3>Каталог</h3>
 
 @inject ICatalog Catalog
-@inject IBasket Basket
-@inject IToastService toastService
 
 <div class="product">
     @foreach (var product in _products)
     {
-        <div class="product-item">
-            <NavLink href="@($"ProductInfo/{product.Id}")">
-                <img src=@product.Image alt="">
-            </NavLink>
-            <div class="product-list">
-                <h3>@product.Name</h3>
-                <span class="price">@product.Price.ToString("###,###,###", new NumberFormatInfo() {NumberGroupSeparator = " ", NumberDecimalSeparator = ", "}) ₽</span>
-                <button class="button" @onclick="() => AddProduct(product)">В корзину</button>
-            </div>
-        </div>
+        <ProductCard Product="@product"/>
     }
 </div>
+
 @code {
     IReadOnlyCollection<Product> _products = new List<Product>();
 
@@ -33,10 +21,5 @@
         _products = Catalog.GetProducts();
         base.OnInitialized();
     }
-    private void AddProduct(Product product)
-    {
-        Basket.Add(product);
-        toastService.ShowSuccess($"{product.Name} успешно добавлен в корзину", "Добавлено в корзину");
-    }
-   
+
 }
