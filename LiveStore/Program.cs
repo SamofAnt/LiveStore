@@ -14,7 +14,7 @@ builder.Services.AddSingleton<ICatalog, InMemoryCatalog>();
 builder.Services.AddSingleton<IClock, LocalDate>();
 builder.Services.AddSingleton<IBasket, InMemoryBasket>();
 builder.Services.AddSingleton<ObservableBasket>();
-
+builder.Services.AddAntDesign();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

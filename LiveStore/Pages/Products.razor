@@ -1,10 +1,10 @@
-﻿@page "/Catalog"
+﻿@page "/Catalog/{CategoryId:int}"
 @using LiveStore.Data.Interfaces
 @using LiveStore.Data.Model
+@inject ICatalog Catalog
 
 <h3>Каталог</h3>
 
-@inject ICatalog Catalog
 
 <div class="product">
 	@foreach (var product in _products)
@@ -14,12 +14,13 @@
 </div>
 
 @code {
+	[Parameter] 
+	public int? CategoryId { get; set; }
 	IReadOnlyCollection<Product> _products = new List<Product>();
 
 	protected override void OnInitialized()
 	{
-		_products = Catalog.GetProducts();
+		_products = Catalog.GetProducts().Where(p=>p.CategoryId == CategoryId).ToList();
 		base.OnInitialized();
 	}
-
 }

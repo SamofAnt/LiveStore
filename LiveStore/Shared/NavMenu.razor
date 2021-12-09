@@ -1,4 +1,5 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using AntDesign
+<div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="">LiveStore</a>
 		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -7,25 +8,30 @@
 	</div>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-	<nav class="flex-column">
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-				<span class="oi oi-home" aria-hidden="true"></span> Главная
-			</NavLink>
-		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="Catalog">
-				<span class="oi oi-cart" aria-hidden="true"></span> Каталог
-			</NavLink>
-		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="Basket">
-				<span class="oi oi-basket" aria-hidden="true"></span> Корзина
-			</NavLink>
-		</div>
-	</nav>
-</div>
+<Menu Style="width: 250px;"
+      DefaultSelectedKeys=@(new[] {"1"})
+      Mode=@MenuMode.Vertical
+      Theme="MenuTheme.Dark">
+	
+	<SubMenu Key="sub1" TitleTemplate=@sub1Title>
+		<NavLink class="nav-link" href="Catalog/1" >
+			<MenuItem Key="1">Смартфоны и гаджеты</MenuItem>
+		</NavLink>
+		<NavLink class="nav-link" href="Catalog/2" >
+			<MenuItem Key="2">Телевизоры</MenuItem>
+		</NavLink>
+		<NavLink class="nav-link" href="Catalog/3" >
+			<MenuItem Key="3">Техника для кухни</MenuItem>
+		</NavLink>
+		<NavLink class="nav-link" href="Catalog/4" >
+			<MenuItem Key="4">Игры и софт</MenuItem>
+		</NavLink>
+	</SubMenu>
+	
+	<NavLink class="nav-link" href="Basket">
+	<MenuItem Key="5" ><span class="oi oi-basket">Корзина</span></MenuItem>
+	</NavLink>
+</Menu>
 
 @code {
 	private bool collapseNavMenu = true;
@@ -37,4 +43,8 @@
 		collapseNavMenu = !collapseNavMenu;
 	}
 
+	RenderFragment sub1Title =
+		@<span class="oi oi-cart">Каталог
+		</span>;
+	}
 }

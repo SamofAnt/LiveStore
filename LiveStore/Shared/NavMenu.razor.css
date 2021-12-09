@@ -1,3 +1,4 @@
+
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }
@@ -17,7 +18,12 @@
     vertical-align: text-top;
     top: -2px;
 }
-
+.oi-cart:before{
+    margin-right: 7px;
+}
+.oi-basket:before{
+    margin-right: 7px;
+}
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
@@ -59,4 +65,18 @@
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+
+.ant-menu{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ant-menu > .ant-menu-submenu:active{
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+}
+.ant-menu > .ant-menu-submenu:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
 }
