@@ -1,0 +1,25 @@
+﻿@page "/Catalog"
+@using LiveStore.Data.Interfaces
+@using LiveStore.Data.Model
+
+<h3>Каталог</h3>
+
+@inject ICatalog Catalog
+
+<div class="product">
+	@foreach (var product in _products)
+	{
+		<ProductCard Product="@product"/>
+	}
+</div>
+
+@code {
+	IReadOnlyCollection<Product> _products = new List<Product>();
+
+	protected override void OnInitialized()
+	{
+		_products = Catalog.GetProducts();
+		base.OnInitialized();
+	}
+
+}

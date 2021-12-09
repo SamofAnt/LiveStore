@@ -1,0 +1,114 @@
+﻿@page "/Basket"
+@using LiveStore.Data.Interfaces
+@using LiveStore.Data.Model
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using System.Globalization
+@implements IDisposable
+
+@inject ICatalog Catalog
+@inject ObservableBasket OBasket
+@inject IToastService toastService
+@inject ProtectedLocalStorage _localStorage
+
+<h3 @ondblclick="ShowClearBasketButton">Корзина</h3>
+
+@if (OBasket.ItemsCount == 0)
+{
+	<p>В корзине ничего нет</p>
+}
+else
+{
+	<div class="CartContainer">
+		@if (_clearBasketButtonVisibility)
+		{
+			<div class="Header">
+				<h5 class="removeAll" @onclick="ClearBasket">Удалить все</h5>
+			</div>
+		}
+		@foreach (var product in _products)
+		{
+			<div class="Cart-Items">
+				<div class="image-box">
+					<img src=@product.Key.Image/>
+				</div>
+				<div class="about">
+					<h1 class="title">@product.Key.Name</h1>
+				</div>
+				<div class="counter">
+					<div class="btn" @onclick="() => AddProduct(product.Key)">+</div>
+					<div class="count">@product.Value</div>
+					<div class="btn" @onclick="() => RemoveProduct(product.Key)">-</div>
+				</div>
+				<div class="prices">
+					<div class="amount">@product.Key.Price.ToString("###,###,###", new NumberFormatInfo { NumberGroupSeparator = " ", NumberDecimalSeparator = ", " }) ₽</div>
+				</div>
+				<div class="remove" @onclick="() => RemoveProduct(product.Key)">
+					<span class="oi oi-x" style="color:darkgray"></span>
+				</div>
+			</div>
+		}
+		<hr>
+		<div class="checkout">
+			<div class="total">
+				<div>
+					<div class="Subtotal">Всего</div>
+					<div class="items">@OBasket.ItemsCount товаров</div>
+				</div>
+				<div class="total-amount">@OBasket.TotalAmount.ToString("###,###,###", new NumberFormatInfo { NumberGroupSeparator = " ", NumberDecimalSeparator = ", " }) ₽</div>
+			</div>
+			<button class="button" @onclick="Checkout">Оформить заказ</button>
+		</div>
+	</div>
+}
+
+@code {
+	IReadOnlyDictionary<Product, int> _products = new Dictionary<Product, int>();
+	private bool _clearBasketButtonVisibility;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		_products = OBasket.GetBasketProducts();
+		OBasket.OnChanged += RefreshBasket;
+	}
+
+	private void RemoveProduct(Product product)
+	{
+		if (OBasket.Remove(product))
+			toastService.ShowSuccess($"{product.Name} успешно удален из корзины", "Удалено из корзины");
+		else
+			toastService.ShowError($"{product.Name} не удален из корзины", "Ошибка удаления");
+	}
+
+	private void Checkout()
+	{
+		toastService.ShowSuccess($"Заказ на {OBasket.TotalAmount.ToString("###,###,###", new NumberFormatInfo { NumberGroupSeparator = " ", NumberDecimalSeparator = ", " })} ₽ успешно оформлен", "Заказ оформлен");
+	}
+
+	private void AddProduct(Product product)
+	{
+		OBasket.Add(product);
+	}
+
+	private void ClearBasket()
+	{
+		OBasket.Clear();
+	}
+
+	private void RefreshBasket()
+	{
+		_products = OBasket.GetBasketProducts();
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void Dispose()
+	{
+		OBasket.OnChanged -= RefreshBasket;
+	}
+
+	private void ShowClearBasketButton()
+	{
+		_clearBasketButtonVisibility = true;
+	}
+
+}
