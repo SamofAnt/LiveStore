@@ -4,25 +4,25 @@
 @inject IToastService toastService
 
 <div class="product-item">
-	<NavLink href="@($"ProductInfo/{Product.Id}")">
-		<img src="@Product.Image" alt="">
-	</NavLink>
-	<div class="product-list">
-		<h3>@Product.Name</h3>
-		<span class="price">@Product.Price.ToString("###,###,###", new NumberFormatInfo { NumberGroupSeparator = " ", NumberDecimalSeparator = ", " }) ₽</span>
-		<button class="button" @onclick="() => AddProduct(Product)">В корзину</button>
-	</div>
+    <NavLink href="@($"ProductInfo/{Product.Id}")">
+        <img src="@Product.Image" alt="">
+    </NavLink>
+    <div class="product-list">
+        <h3>@Product.Name</h3>
+        <span class="price">@Product.Price.ToString("###,###,###", new NumberFormatInfo {NumberGroupSeparator = " ", NumberDecimalSeparator = ", "}) ₽</span>
+        <button class="button" @onclick="() => AddProduct(Product)">В корзину</button>
+    </div>
 </div>
 
 @code {
 
-	[Parameter]
-	public Product? Product { get; set; }
+    [Parameter]
+    public Product? Product { get; set; }
 
-	private void AddProduct(Product product)
-	{
-		Basket.Add(product);
-		toastService.ShowSuccess($"{product.Name} успешно добавлен в корзину", "Добавлено в корзину");
-	}
+    private void AddProduct(Product product)
+    {
+        Basket.Add(product);
+        toastService.ShowSuccess($"{product.Name} успешно добавлен в корзину", "Добавлено в корзину");
+    }
 
 }

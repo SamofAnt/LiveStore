@@ -1,23 +1,43 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using LiveStore.Data
+@using System.Globalization
+@inherits LayoutComponentBase
+@inject IBasket Basket
 
 <PageTitle>LiveStore</PageTitle>
 
 <div class="page">
-	<div class="sidebar">
-		<NavMenu/>
-	</div>
+    <div class="sidebar">
+        <NavMenu/>
+    </div>
 
-	<main>
-		<div class="top-row px-4">
-			<a href="Basket">
-				<span class="oi oi-cart" aria-hidden="true"></span>
-				Корзина
-			</a>
-		</div>
-		<article class="content px-4">
-			@Body
-		</article>
-	</main>
-	<BlazoredToasts/>
+    <main>
+        <div class="top-row px-4">
+            @if (_totalAmount > 0)
+            {
+                <a href="Basket" class="cart-link">
+                    <span class="cart-link__badge">@_count</span>
+                    <span class="oi oi-cart" aria-hidden="true"></span>
+                    @_totalAmount.ToString("###,###,###", new NumberFormatInfo {NumberGroupSeparator = " ", NumberDecimalSeparator = ", "}) ₽
+                </a>
+            }
+        </div>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+    <BlazoredToasts/>
 </div>
+
+@code
+{
+    private decimal _totalAmount;
+    private int _count;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        _totalAmount = Basket.TotalAmount;
+        _count = Basket.ItemsCount;
+        StateHasChanged();
+        base.OnAfterRender(firstRender);
+    }
+}

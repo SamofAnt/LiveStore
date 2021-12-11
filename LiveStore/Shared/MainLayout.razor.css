@@ -9,12 +9,37 @@ main {
 }
 
 .sidebar {
-    background-color:#001529;
+    background-color: #001529;
 }
 
 .oi {
     padding-right: 5px;
     color: #000;
+}
+
+.cart-link {
+    position: relative;
+    text-decoration: none;
+    color: #000;
+}
+
+.cart-link__badge {
+    border-radius: 20px;
+    align-items: center;
+    background-image: linear-gradient(to bottom, #ffbc0b, #ff7400);
+    color: #fff;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: bolder;
+    height: 20px;
+    justify-content: center;
+    left: 8px;
+    line-height: 20px;
+    min-width: 20px;
+    padding: 0 5px;
+    position: absolute;
+    text-align: center;
+    top: -12px;
 }
 
 .top-row {
@@ -32,7 +57,6 @@ main {
 }
 
 .top-row a:first-child {
-    overflow: hidden;
     text-overflow: ellipsis;
 }
 

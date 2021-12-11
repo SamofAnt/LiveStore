@@ -1,12 +1,16 @@
-﻿namespace LiveStore.Data.Model;
+﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
-public class ObservableBasket : IBasket
+namespace LiveStore.Data.Model;
+
+public class LocalStorageBasket : IBasket
 {
+    private readonly ProtectedLocalStorage _localStorage;
     private readonly IBasket _originalBasket;
 
-    public ObservableBasket(IBasket originalBasket)
+    public LocalStorageBasket(IBasket originalBasket, ProtectedLocalStorage localStorage)
     {
         _originalBasket = originalBasket;
+        _localStorage = localStorage;
     }
 
     public int ItemsCount => _originalBasket.ItemsCount;
@@ -20,21 +24,24 @@ public class ObservableBasket : IBasket
     public void Add(Product product)
     {
         _originalBasket.Add(product);
-        OnChanged?.Invoke();
+        SaveBasketAsync();
     }
 
     public bool Remove(Product product)
     {
         var result = _originalBasket.Remove(product);
-        OnChanged?.Invoke();
+        SaveBasketAsync();
         return result;
     }
 
     public void Clear()
     {
         _originalBasket.Clear();
-        OnChanged?.Invoke();
+        SaveBasketAsync();
     }
 
-    public virtual event Action? OnChanged;
+    private async Task SaveBasketAsync()
+    {
+        await _localStorage.SetAsync("basket", _localStorage);
+    }
 }

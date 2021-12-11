@@ -1,0 +1,13 @@
+﻿@page "/Catalog/{CategoryId:int}"
+@inject ICategories Categories
+@using LiveStore.Data.Interfaces
+@inherits CatalogRazor
+
+<h3>@Categories.GetCategoryById(CategoryId)?.Name</h3>
+
+<div class="product">
+    @foreach (var product in _products)
+    {
+        <ProductCard Product="@product"/>
+    }
+</div>

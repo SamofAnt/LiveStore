@@ -3,13 +3,13 @@
 public class InMemoryBasket : IBasket
 {
     private readonly object _mutex = new();
-    private Dictionary<Product, int> _products = new();
+    private Dictionary<Product, int>? _products = new();
 
     public int ItemsCount => _products?.Sum(p => p.Value) ?? 0;
 
     public decimal TotalAmount => _products?.Sum(p => p.Key.Price * p.Value) ?? 0;
 
-    public IReadOnlyDictionary<Product, int> GetBasketProducts()
+    public IReadOnlyDictionary<Product, int>? GetBasketProducts()
     {
         return _products;
     }
