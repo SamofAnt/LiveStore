@@ -1,0 +1,46 @@
+﻿@page "/AddProduct"
+@using System.ComponentModel.DataAnnotations
+@using LiveStore.Data.Model
+@using LiveStore.ORM
+
+@inject StoreContext Db;
+<h3>Добавление продукта</h3>
+
+<EditForm Model="_model" OnValidSubmit="ProcessValidForm">
+  <DataAnnotationsValidator/>
+ 
+
+  Category: <InputText @bind-Value="_model.Category" />
+  Name: <InputText @bind-Value="_model.Name" />
+  Price: <InputText @bind-Value="_model.Price" />
+  Image <InputText @bind-Value="_model.Image" />
+  Description <InputText @bind-Value="_model.Description" />
+  
+  <br/> <input type="submit" value="Добавить товар">
+  <ValidationSummary/>
+
+</EditForm>
+
+@code {
+  private LoginFormModel _model = new();
+  private class LoginFormModel
+  {
+
+    [Required]
+    public string Category { get; set; }
+    [Required]
+    public string Name { get; set; }
+    [Required]
+    public string Price { get; set; }
+    [Required]
+    public string Image { get; set; }
+    [Required, MinLength(10)]
+    public string Description { get; set; }
+  }
+  private void ProcessValidForm()
+  {
+    Db.Products.Add(new Product(new Guid(), Convert.ToInt32(_model.Category), _model.Name, Convert.ToDecimal(_model.Price), _model.Image, _model.Description));
+    Db.SaveChanges();
+  }
+
+}

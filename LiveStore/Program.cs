@@ -2,20 +2,26 @@ using Blazored.Toast;
 using LiveStore.Data;
 using LiveStore.Data.Interfaces;
 using LiveStore.Data.Model;
+using LiveStore.ORM;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var dbPath = "myapp.db";
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazoredToast();
+builder.Services.AddDbContext<StoreContext>(
+    options => options.UseSqlite($"Data Source={dbPath}"));
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<ICatalog, InMemoryCatalog>();
+builder.Services.AddScoped<ICatalog, InMemoryCatalog>();
 builder.Services.AddSingleton<IClock, LocalDate>();
 builder.Services.AddSingleton<IBasket, InMemoryBasket>();
 builder.Services.AddSingleton<ICategories, InMemoryCategories>();
 builder.Services.AddSingleton<ObservableBasket>();
 builder.Services.AddAntDesign();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
