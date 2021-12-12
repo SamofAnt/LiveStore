@@ -1,4 +1,4 @@
-﻿@page "/ProductInfo/{productId:int}"
+﻿@page "/ProductInfo/{productId:guid}"
 @using LiveStore.Data.Interfaces
 @using LiveStore.Data.Model
 @using System.Globalization
@@ -19,7 +19,7 @@
 @code {
 
     [Parameter]
-    public int ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     Product _product = Product.Empty;
 
