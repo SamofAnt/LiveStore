@@ -1,46 +1,77 @@
 ﻿@page "/AddProduct"
-@using System.ComponentModel.DataAnnotations
-@using LiveStore.Data.Model
 @using LiveStore.ORM
+@using LiveStore.Data.Interfaces
+@using LiveStore.Data.Model
+@using System.ComponentModel.DataAnnotations
 
+@inject IToastService toastService
 @inject StoreContext Db;
+@inject ICategories Categories;
 <h3>Добавление продукта</h3>
 
-<EditForm Model="_model" OnValidSubmit="ProcessValidForm">
-  <DataAnnotationsValidator/>
- 
-
-  Category: <InputText @bind-Value="_model.Category" />
-  Name: <InputText @bind-Value="_model.Name" />
-  Price: <InputText @bind-Value="_model.Price" />
-  Image <InputText @bind-Value="_model.Image" />
-  Description <InputText @bind-Value="_model.Description" />
-  
-  <br/> <input type="submit" value="Добавить товар">
-  <ValidationSummary/>
-
-</EditForm>
+<Form Model="@_model"
+      OnFinish="ProcessValidForm"
+      LabelColSpan="8"
+      WrapperColSpan="16">
+    <FormItem Label="Название" Style="text-align: left;flex: 0 0 10%;display: block">
+        <Input @bind-Value="@context.Name" Style="flex: 0 0 10%;" Placeholder="Введите название товара"/>
+    </FormItem>
+    <FormItem Label="Цена" Style="text-align: left;flex: 0 0 10%;display: block;">
+        <Input @bind-Value="@context.Price" Style="flex: 0 0 10%;" Placeholder="Введите цену товара"/>
+    </FormItem>
+    <FormItem Label="Картинка" Style="text-align: left;flex: 0 0 10%;display: block;">
+        <Input @bind-Value="@context.Image" Style="flex: 0 0 10%;" Placeholder="Введите картинку товара"/>
+    </FormItem>
+    <FormItem Label="Описание" Style="text-align: left;flex: 0 0 10%;display: block;">
+        <TextArea @bind-Value="@context.Description" Style="flex: 0 0 10%;" Placeholder="Введите описание товара"/>
+    </FormItem>
+    <FormItem Label="Категория" Style="text-align: left;flex: 0 0 10%;display: block;">
+        <Select DataSource="@_categories"
+                @bind-Value="@context.Category"
+                AllowClear
+                Placeholder="Выберите категорию">
+        </Select>
+    </FormItem>
+    <FormItem WrapperColOffset="8" WrapperColSpan="16">
+        <button class="button">Добавить товар</button>
+    </FormItem>
+</Form>
 
 @code {
-  private LoginFormModel _model = new();
-  private class LoginFormModel
-  {
+    private readonly LoginFormModel _model = new();
+    private List<string> _categories = new();
 
-    [Required]
-    public string Category { get; set; }
-    [Required]
-    public string Name { get; set; }
-    [Required]
-    public string Price { get; set; }
-    [Required]
-    public string Image { get; set; }
-    [Required, MinLength(10)]
-    public string Description { get; set; }
-  }
-  private void ProcessValidForm()
-  {
-    Db.Products.Add(new Product(new Guid(), Convert.ToInt32(_model.Category), _model.Name, Convert.ToDecimal(_model.Price), _model.Image, _model.Description));
-    Db.SaveChanges();
-  }
+    private class LoginFormModel
+    {
+        [Required]
+        public string Category { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Price { get; set; }
+
+        [Required]
+        public string Image { get; set; }
+
+        [Required]
+        [MinLength(10)]
+        public string Description { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _categories = Categories.GetCategories().Select(c => c.Name).ToList();
+    }
+
+    private void ProcessValidForm()
+    {
+        var product = new Product(Categories.GetCategories().FirstOrDefault(c => c.Name == _model.Category).Id, _model.Name, Convert.ToDecimal(_model.Price), _model.Image, _model.Description);
+        Db.Products.Add(product);
+        Db.SaveChanges();
+        toastService.ShowSuccess($"{product.Name} успешно добавлен в каталог", "Добавлено в каталог");
+    }
 
 }

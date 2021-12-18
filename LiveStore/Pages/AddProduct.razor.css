@@ -1,0 +1,26 @@
+﻿
+.ant-col-8 {
+    flex: 0 0 10%;
+}
+
+.ant-form-item-label {
+    text-align: left;
+}
+
+.button {
+    display: inline-block;
+    float: right;
+    padding: 10px 25px;
+    background: #fc5a5a;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    margin: 20px 0;
+    font-size: 25px;
+    line-height: 32px;
+    transition: .3s ease-in;
+}
+
+.button:hover {
+    background: #FC3F3F;
+}

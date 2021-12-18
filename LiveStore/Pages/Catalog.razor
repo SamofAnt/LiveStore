@@ -1,9 +1,13 @@
 ﻿@page "/Catalog/{CategoryId:int}"
-@inject ICategories Categories
 @using LiveStore.Data.Interfaces
-@inherits CatalogRazor
+@inject ICategories Categories
 
-<h3>@Categories.GetCategoryById(CategoryId)?.Name</h3>
+<h3>@Categories.GetCategoryById(CategoryId).Result.Name</h3>
+
+<h4>Фильтр по цене</h4>
+<div class="slider">
+    <Slider TValue="(double, double)" Max="_maxPrice" OnChange="e => OnChanged(e)"/>
+</div>
 
 <div class="product">
     @foreach (var product in _products)

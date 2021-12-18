@@ -66,3 +66,7 @@
 .product-item:hover .button {
     background: #fc5a5a;
 }
+
+.slider {
+    width: 40%;
+}

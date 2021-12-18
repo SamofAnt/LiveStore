@@ -33,11 +33,12 @@
     private decimal _totalAmount;
     private int _count;
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        _totalAmount = Basket.TotalAmount;
-        _count = Basket.ItemsCount;
-        StateHasChanged();
-        base.OnAfterRender(firstRender);
-    }
+    // protected override void OnAfterRender(bool firstRender)
+    // {
+    //     base.OnAfterRender(firstRender);
+    //     _totalAmount = Basket.TotalAmount;
+    //     _count = Basket.ItemsCount;
+    //     StateHasChanged();
+    //     
+    // }
 }

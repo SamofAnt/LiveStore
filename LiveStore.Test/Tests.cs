@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using LiveStore.Data;
 using LiveStore.Data.Model;
@@ -15,7 +14,7 @@ public class Tests
     public void Setup()
     {
         _basket = new InMemoryBasket();
-        _product = new Product(new Guid(), 1, "Test", 0m, "", "");
+        _product = new Product(1, "Test", 0m, "", "");
     }
 
     [Test]

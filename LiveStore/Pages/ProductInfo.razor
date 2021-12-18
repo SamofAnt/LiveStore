@@ -1,9 +1,9 @@
-﻿@page "/ProductInfo/{productId:guid}"
-@using LiveStore.Data.Interfaces
+﻿@page "/ProductInfo/{productId:int}"
+@using LiveStore.ORM.Repositories
 @using LiveStore.Data.Model
 @using System.Globalization
 
-@inject ICatalog Catalog
+@inject IProductRepository Products
 <h3>@_product.Name</h3>
 
 <div class="product-item">
@@ -19,14 +19,14 @@
 @code {
 
     [Parameter]
-    public Guid ProductId { get; set; }
+    public int ProductId { get; set; }
 
     Product _product = Product.Empty;
 
     protected override void OnInitialized()
     {
-        _product = Catalog.GetProducts().First(p => p.Id == ProductId);
         base.OnInitialized();
+        _product = Products.GetById(ProductId).Result;
     }
 
 }

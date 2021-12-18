@@ -1,24 +1,25 @@
 ﻿using LiveStore.Data.Interfaces;
+using LiveStore.ORM;
+using LiveStore.ORM.Repositories;
 
 namespace LiveStore.Data.Model;
 
 public class InMemoryCategories : ICategories
 {
-    private readonly IReadOnlyCollection<Category> _categories = new Category[]
+    private readonly ICategoryRepository _categories;
+
+    public InMemoryCategories(StoreContext context)
     {
-        new(1, "Смартфоны и гаджеты"),
-        new(2, "Телевизоры"),
-        new(3, "Техника для кухни"),
-        new(4, "Игры и софт")
-    };
+        _categories = new CategoryRepository(context);
+    }
 
     public IReadOnlyCollection<Category> GetCategories()
     {
-        return _categories;
+        return _categories.GetAll().Result.ToList();
     }
 
-    public Category? GetCategoryById(int id)
+    public Task<Category> GetCategoryById(int id)
     {
-        return _categories.SingleOrDefault(c => c.Id == id);
+        return _categories.GetById(id);
     }
 }
