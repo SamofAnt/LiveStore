@@ -5,6 +5,7 @@ using LiveStore.Data.Model;
 using LiveStore.ORM;
 using LiveStore.ORM.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var dbPath = "myapp.db";
@@ -24,7 +25,9 @@ builder.Services.AddSingleton<IBasket, InMemoryBasket>();
 builder.Services.AddScoped<ICategories, InMemoryCategories>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.Decorate<IProductRepository, LoggableProductRepository>();
 builder.Services.AddSingleton<ObservableBasket>();
+builder.Host.UseSerilog(((context, configuration) => configuration.WriteTo.Sentry(o => o.Dsn = "https://0d93211647b5492383b86995e36585b7@o1093811.ingest.sentry.io/6113191")));
 builder.Services.AddAntDesign();
 
 var app = builder.Build();

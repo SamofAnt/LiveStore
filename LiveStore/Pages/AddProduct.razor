@@ -3,10 +3,13 @@
 @using LiveStore.Data.Interfaces
 @using LiveStore.Data.Model
 @using System.ComponentModel.DataAnnotations
+@using LiveStore.ORM.Repositories
 
 @inject IToastService toastService
-@inject StoreContext Db;
+@inject IProductRepository ProductRepository;
 @inject ICategories Categories;
+@inject ILogger<AddProduct> Logger;
+
 <h3>Добавление продукта</h3>
 
 <Form Model="@_model"
@@ -66,11 +69,10 @@
         _categories = Categories.GetCategories().Select(c => c.Name).ToList();
     }
 
-    private void ProcessValidForm()
+    private async Task ProcessValidForm()
     {
         var product = new Product(Categories.GetCategories().FirstOrDefault(c => c.Name == _model.Category).Id, _model.Name, Convert.ToDecimal(_model.Price), _model.Image, _model.Description);
-        Db.Products.Add(product);
-        Db.SaveChanges();
+        await ProductRepository.Add(product);
         toastService.ShowSuccess($"{product.Name} успешно добавлен в каталог", "Добавлено в каталог");
     }
 

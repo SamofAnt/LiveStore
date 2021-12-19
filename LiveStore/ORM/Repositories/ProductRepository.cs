@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LiveStore.ORM.Repositories;
 
-internal class ProductRepository : IProductRepository
+public class ProductRepository : IProductRepository
 {
     private readonly StoreContext _context;
 
