@@ -44,12 +44,9 @@ public class CategoryRepository : ICategoryRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> Remove(int id)
+    public async Task Remove(Category category)
     {
-        if (!TryGet(id, out var category))
-            return false;
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
-        return true;
     }
 }

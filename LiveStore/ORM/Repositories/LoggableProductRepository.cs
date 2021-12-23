@@ -20,57 +20,42 @@ public class LoggableProductRepository : IProductRepository
         return product;
     }
 
-    public Task<IEnumerable<Product>> GetAllByCategoryId(int id)
+    public async Task<IEnumerable<Product>> GetAllByCategoryId(int id)
     {
-        var products = _originalRepository.GetAllByCategoryId(id);
+        var products = await _originalRepository.GetAllByCategoryId(id);
         _logger.LogInformation("Method GetAllByCategoryId returned the products successfully: {@Products}", products);
         return products;
     }
 
-    public Task<IEnumerable<Product>> GetAll()
+    public async Task<IEnumerable<Product>> GetAll()
     {
-        throw new NotImplementedException();
+        var products = await _originalRepository.GetAll();
+        _logger.LogInformation("Method GetAll returned the products successfully: {@Products}", products);
+        return products;
     }
 
-    public Task<Product?> FindById(int id)
+    public async Task<Product?> FindById(int id)
     {
-        throw new NotImplementedException();
+        Product? product = await _originalRepository.FindById(id);
+        _logger.LogInformation("Method FindById returned the product successfully: {@Product}", product);
+        return product;
     }
-
-    public bool TryGet(int id, out Product? entity)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task Add(Product product)
     {
-        try
-        {
-            throw new InvalidOperationException("Test exception");
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e,"Testing sentry");
-        }
-        
-        /*try
-        {
-            await _originalRepository.Add(product);
-            _logger.LogInformation("Product adding successfully: {@Product}", product);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e,"Product adding failed: {@Product}", product);
-        }*/
+        await _originalRepository.Add(product);
+        _logger.LogInformation("Added product: {@Product}", product);
     }
 
-    public Task Update(Product entity)
+    public async Task Update(Product product)
     {
-        throw new NotImplementedException();
+        await _originalRepository.Update(product);
+        _logger.LogInformation("Updated product: {@Product}", product);
     }
 
-    public Task<bool> Remove(int id)
+    public async Task Remove(Product product)
     {
-        throw new NotImplementedException();
+        await _originalRepository.Remove(product);
+        _logger.LogInformation("Removed product: {@Product}", product);
     }
 }

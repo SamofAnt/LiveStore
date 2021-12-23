@@ -31,13 +31,7 @@ public class ProductRepository : IProductRepository
     {
         return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
     }
-
-    public bool TryGet(int id, out Product? product)
-    {
-        product = FindById(id).Result;
-        return product != null;
-    }
-
+    
 
     public async Task Add(Product product)
     {
@@ -51,12 +45,9 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> Remove(int id)
+    public async Task Remove(Product product)
     {
-        if (!TryGet(id, out var product))
-            return false;
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
-        return true;
     }
 }
