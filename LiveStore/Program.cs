@@ -38,18 +38,18 @@ var app = builder.Build();
 
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<ResponseLoggingMiddleware>();
-// app.Use(async (context, next) =>
-// {
-//     var browser = context.Request.Headers["User-Agent"];
-//     if (!browser.ToString().Contains("Edg"))
-//     {
-//         await context.Response.WriteAsync(
-//             "This browser is not supported yet.");
-//         return;
-//     }
-//
-//     await next();
-// });
+app.Use(async (context, next) =>
+{
+    var browser = context.Request.Headers["User-Agent"];
+    if (!browser.ToString().Contains("Edg"))
+    {
+        await context.Response.WriteAsync(
+            "This browser is not supported yet.");
+        return;
+    }
+
+    await next();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
