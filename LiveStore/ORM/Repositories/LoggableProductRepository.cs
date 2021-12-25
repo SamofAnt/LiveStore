@@ -4,8 +4,8 @@ namespace LiveStore.ORM.Repositories;
 
 public class LoggableProductRepository : IProductRepository
 {
-    private readonly IProductRepository _originalRepository;
     private readonly ILogger<IProductRepository> _logger;
+    private readonly IProductRepository _originalRepository;
 
     public LoggableProductRepository(IProductRepository originalRepository, ILogger<LoggableProductRepository> logger)
     {
@@ -15,7 +15,7 @@ public class LoggableProductRepository : IProductRepository
 
     public async Task<Product> GetById(int id)
     {
-        var product =  await _originalRepository.GetById(id);
+        var product = await _originalRepository.GetById(id);
         _logger.LogInformation("Method GetById  returned the product successfully: {@Product}", product);
         return product;
     }
@@ -36,11 +36,11 @@ public class LoggableProductRepository : IProductRepository
 
     public async Task<Product?> FindById(int id)
     {
-        Product? product = await _originalRepository.FindById(id);
+        var product = await _originalRepository.FindById(id);
         _logger.LogInformation("Method FindById returned the product successfully: {@Product}", product);
         return product;
     }
-    
+
     public async Task Add(Product product)
     {
         await _originalRepository.Add(product);
