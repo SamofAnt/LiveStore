@@ -1,6 +1,4 @@
-﻿using LiveStore.Data.Model;
-
-namespace LiveStore.ORM.Repositories;
+﻿namespace LiveStore.ORM.Repositories;
 
 public interface ICategoryRepository
 {

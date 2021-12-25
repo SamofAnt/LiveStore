@@ -20,7 +20,7 @@ public partial class Catalog
         base.OnInitialized();
         _products = ProductsRepository.GetAll().Result.ToList();
     }
-    
+
     private async Task OnChanged((double, double) args)
     {
         _products = ProductsRepository.GetAllByCategoryId(CategoryId).Result

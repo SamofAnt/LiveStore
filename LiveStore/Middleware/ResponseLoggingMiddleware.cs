@@ -2,15 +2,16 @@
 
 public class ResponseLoggingMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger<RequestLoggingMiddleware> _logger;
-    
-    public ResponseLoggingMiddleware(RequestDelegate next,                                                                                                              
+    private readonly RequestDelegate _next;
+
+    public ResponseLoggingMiddleware(RequestDelegate next,
         ILogger<RequestLoggingMiddleware> logger)
     {
         _next = next;
         _logger = logger;
     }
+
     public async Task InvokeAsync(HttpContext context)
     {
         var originalBody = context.Response.Body;

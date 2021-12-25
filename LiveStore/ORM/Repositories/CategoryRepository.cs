@@ -26,12 +26,6 @@ public class CategoryRepository : ICategoryRepository
         return await _context.Categories.FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public bool TryGet(int id, out Category? category)
-    {
-        category = FindById(id).Result;
-        return category != null;
-    }
-
     public async Task Add(Category category)
     {
         await _context.Categories.AddAsync(category);
@@ -48,5 +42,11 @@ public class CategoryRepository : ICategoryRepository
     {
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
+    }
+
+    public bool TryGet(int id, out Category? category)
+    {
+        category = FindById(id).Result;
+        return category != null;
     }
 }
