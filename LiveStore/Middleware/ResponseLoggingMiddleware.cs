@@ -13,7 +13,18 @@ public class ResponseLoggingMiddleware
     }
     public async Task InvokeAsync(HttpContext context)
     {
-        _logger.LogInformation("Request headers: {@Headers}", context.Response.Headers);
-        await _next(context);
+        var originalBody = context.Response.Body;
+        using (var memStream = new MemoryStream())
+        {
+            context.Response.Body = memStream;
+            await _next(context);
+            _logger.LogInformation("Response headers: {@Headers}", context.Response.Headers);
+
+            memStream.Position = 0;
+            var responseBody = await new StreamReader(memStream).ReadToEndAsync();
+            _logger.LogInformation("Response body: {@Body}", responseBody);
+            memStream.Position = 0;
+            await memStream.CopyToAsync(originalBody);
+        }
     }
 }

@@ -5,6 +5,7 @@ using LiveStore.Data.Model;
 using LiveStore.Middleware;
 using LiveStore.ORM;
 using LiveStore.ORM.Repositories;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -36,6 +37,7 @@ builder.Services.AddAntDesign();
 var app = builder.Build();
 
 app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<ResponseLoggingMiddleware>();
 app.Use(async (context, next)=>
 {
     var browser = context.Request.Headers["User-Agent"];
@@ -43,7 +45,7 @@ app.Use(async (context, next)=>
     {
         await context.Response.WriteAsync(
             "This browser is not supported yet.");
-        return; //прерываем выполнение конвейера
+        return; 
     }
     await next();
 });

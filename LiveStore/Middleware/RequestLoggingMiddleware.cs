@@ -1,4 +1,6 @@
-﻿namespace LiveStore.Middleware;
+﻿using System.Text;
+
+namespace LiveStore.Middleware;
 
 public class RequestLoggingMiddleware
 {
@@ -13,7 +15,14 @@ public class RequestLoggingMiddleware
     }
     public async Task InvokeAsync(HttpContext context)
     {
-        _logger.LogInformation("Request headers: {@Headers}", context.Request.Headers);
+
+         context.Request.EnableBuffering();
+         context.Request.Body.Position = 0;
+        var bodyStr = await new StreamReader(context.Request.Body, Encoding.UTF8, true, 1024, true).ReadToEndAsync();
+        
+        context.Request.Body.Position = 0;   
+        _logger.LogInformation("Request headers: {@Headers}", context.Request.Headers);  
+        _logger.LogInformation("Request body: {@Body}", bodyStr);
         await _next(context);
     }
 }
